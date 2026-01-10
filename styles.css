@@ -1,0 +1,742 @@
+/* Notion 风格习惯追踪插件样式 */
+
+.habit-tracker-view {
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--background-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
+}
+
+/* 头部样式 */
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.habit-title {
+    margin: 0;
+    color: var(--text-normal);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.habit-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.habit-btn {
+    padding: 8px 16px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.habit-btn:hover {
+    background: var(--background-modifier-hover);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 时间筛选 */
+.time-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+}
+
+.time-filter-btn {
+    padding: 8px 20px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-normal);
+    transition: all 0.15s ease;
+}
+
+.time-filter-btn:hover {
+    background: var(--background-modifier-hover);
+    transform: translateY(-1px);
+}
+
+.time-filter-btn.active {
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border-color: var(--interactive-accent);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* 习惯列表视图 */
+.habit-list-view {
+    margin-top: 24px;
+}
+
+.habit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 12px;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.habit-row:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.habit-row-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 200px;
+}
+
+.habit-row-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-normal);
+}
+
+.habit-row-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.habit-row-streak {
+    font-size: 14px;
+    color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.habit-row-count {
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--background-secondary);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.habit-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.habit-dot-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.habit-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.habit-checkbox:hover {
+    transform: scale(1.1);
+}
+
+/* 统计卡片 */
+.habit-stats {
+    margin-bottom: 32px;
+}
+
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.15s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.stat-card.total {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border-color: #7dd3fc;
+}
+
+.stat-card.habits {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-color: #bbf7d0;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-normal);
+    line-height: 1.2;
+}
+
+/* 习惯统计列表 */
+.habit-stats-section {
+    margin-top: 24px;
+}
+
+.habit-stats-section h3 {
+    margin-bottom: 16px;
+    color: var(--text-normal);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.habit-stats-list {
+    display: grid;
+    gap: 12px;
+}
+
+.habit-stat-item {
+    padding: 16px 20px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.habit-stat-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.habit-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habit-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-normal);
+}
+
+.habit-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.habit-count {
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--background-secondary);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.habit-streak {
+    font-size: 14px;
+    color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* 日历样式 */
+.habit-calendar {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.month-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.month-nav-btn {
+    padding: 8px 16px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.15s ease;
+}
+
+.month-nav-btn:hover {
+    background: var(--background-modifier-hover);
+    transform: scale(1.05);
+}
+
+.month-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-normal);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-weekday {
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.calendar-day {
+    min-height: 80px;
+    padding: 8px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: var(--background-modifier-hover);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.calendar-day.empty:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+.calendar-day.today {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-color: #60a5fa;
+    font-weight: 600;
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-normal);
+    margin-bottom: 4px;
+}
+
+.day-habits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.habit-dot {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 配置模态框 */
+.habit-config-modal {
+    padding: 24px;
+    min-width: 650px;
+    max-width: 700px;
+    background: var(--background-primary);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.config-tabs {
+    display: flex;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--background-modifier-border);
+    gap: 4px;
+}
+
+.config-tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.config-tab:hover {
+    color: var(--text-normal);
+    background: var(--background-modifier-hover);
+}
+
+.config-tab.active {
+    color: var(--text-normal);
+    background: var(--background-primary);
+    font-weight: 600;
+}
+
+.config-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--interactive-accent);
+    border-radius: 1px;
+}
+
+.config-content {
+    min-height: 400px;
+}
+
+.config-description {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.config-description p {
+    margin: 0 0 8px 0;
+}
+
+.config-description p:last-child {
+    margin-bottom: 0;
+}
+
+.config-section {
+    margin-bottom: 32px;
+    padding: 20px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.config-section h3 {
+    margin-bottom: 16px;
+    color: var(--text-normal);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.config-input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.config-input-group label {
+    font-weight: 500;
+    color: var(--text-normal);
+    min-width: 100px;
+}
+
+.config-text-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-size: 15px;
+    transition: all 0.15s ease;
+}
+
+.config-text-input:focus {
+    outline: none;
+    border-color: var(--interactive-accent);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.config-preview-box {
+    padding: 24px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.preview-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-normal);
+    line-height: 1.2;
+}
+
+/* 习惯列表 */
+.habit-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    background: var(--background-primary);
+}
+
+.habit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--background-modifier-border-focus);
+    transition: background 0.15s ease;
+}
+
+.habit-item:hover {
+    background: var(--background-modifier-hover);
+}
+
+.habit-item:last-child {
+    border-bottom: none;
+}
+
+.habit-key,
+.habit-name {
+    padding: 8px 12px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-size: 14px;
+    transition: all 0.15s ease;
+}
+
+.habit-key {
+    width: 120px;
+    font-family: monospace;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.habit-name {
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.habit-key:focus,
+.habit-name:focus {
+    outline: none;
+    border-color: var(--interactive-accent);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.delete-habit-btn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #fef2f2, #fecaca);
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.delete-habit-btn:hover {
+    background: linear-gradient(135deg, #fecaca, #fca5a5);
+    transform: translateY(-1px);
+}
+
+.add-habit-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--interactive-accent), #3b82f6);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.add-habit-btn:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.config-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--background-modifier-border);
+}
+
+.config-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.config-btn-cancel {
+    background: var(--background-primary);
+    color: var(--text-normal);
+}
+
+.config-btn-cancel:hover {
+    background: var(--background-modifier-hover);
+    transform: translateY(-1px);
+}
+
+.config-btn-save {
+    background: linear-gradient(135deg, var(--interactive-accent), #3b82f6);
+    color: var(--text-on-accent);
+    border-color: var(--interactive-accent);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.config-btn-save:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* 空状态 */
+.no-data {
+    text-align: center;
+    padding: 48px;
+    color: var(--text-muted);
+    font-size: 15px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .habit-tracker-view {
+        padding: 16px;
+    }
+    
+    .habit-title {
+        font-size: 24px;
+    }
+    
+    .habit-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+    
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-grid {
+        gap: 4px;
+    }
+    
+    .calendar-day {
+        min-height: 60px;
+        padding: 4px;
+    }
+    
+    .habit-config-modal {
+        min-width: 90vw;
+        max-width: 90vw;
+        padding: 20px;
+    }
+    
+    .habit-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .habit-key {
+        width: 100px;
+    }
+    
+    .habit-name {
+        width: 120px;
+    }
+    
+    .delete-habit-btn {
+        margin-left: 0;
+    }
+}
