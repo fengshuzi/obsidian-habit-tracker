@@ -101,6 +101,8 @@
     border-radius: 12px;
     transition: all 0.15s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .habit-row:hover {
@@ -113,6 +115,7 @@
     align-items: center;
     gap: 16px;
     min-width: 200px;
+    flex: 1;
 }
 
 .habit-row-name {
@@ -125,6 +128,7 @@
     display: flex;
     gap: 12px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .habit-row-streak {
@@ -149,6 +153,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .habit-dot-wrapper {
@@ -158,6 +163,7 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .habit-checkbox {
@@ -165,6 +171,7 @@
     height: 18px;
     cursor: pointer;
     margin: 0;
+    flex-shrink: 0;
 }
 
 .habit-checkbox:hover {
@@ -738,5 +745,61 @@
     
     .delete-habit-btn {
         margin-left: 0;
+    }
+    
+    /* 移动端习惯行优化 */
+    .habit-row {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .habit-row-info {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        min-width: unset;
+    }
+    
+    .habit-row-name {
+        font-size: 16px;
+    }
+    
+    .habit-row-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .habit-dots {
+        width: 100%;
+        justify-content: space-between;
+        gap: 4px;
+    }
+    
+    .habit-dot-wrapper {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .habit-checkbox {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 小屏手机端优化（宽度小于480px） */
+@media (max-width: 480px) {
+    /* 时间筛选按钮改为两栏 */
+    .time-filters {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .time-filter-btn {
+        flex: 1;
+        min-width: calc(50% - 4px);
+        padding: 10px 16px;
     }
 }
