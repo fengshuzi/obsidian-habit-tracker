@@ -543,6 +543,7 @@ class HabitTrackerView extends ItemView {
         this.renderTimeFilter(container);
         this.renderStats(container);
         this.renderHabitList(container);
+        this.renderCheckInRecords(container);
         
         await this.loadAllRecords();
     }
@@ -625,6 +626,9 @@ class HabitTrackerView extends ItemView {
         const startStr = this.formatDate(startDate);
         const endStr = this.formatDate(endDate);
         
+        // 保存当前时间范围
+        this.currentTimeRange = { startDate, endDate, rangeKey };
+        
         // 筛选记录
         this.filteredRecords = this.plugin.storage.filterRecordsByDateRange(
             this.currentRecords, startStr, endStr
@@ -637,6 +641,7 @@ class HabitTrackerView extends ItemView {
         
         this.updateStatsDisplay();
         this.updateHabitListDisplay();
+        this.updateCheckInRecordsDisplay();
     }
 
     getWeekStart(date) {
@@ -666,6 +671,13 @@ class HabitTrackerView extends ItemView {
         this.habitListContainer = container.createDiv('habit-list-view');
         this.updateHabitListDisplay();
     }
+    
+    renderCheckInRecords(container) {
+        const recordsSection = container.createDiv('checkin-records-section');
+        recordsSection.createEl('h3', { text: '打卡记录', cls: 'section-title' });
+        this.checkInRecordsContainer = recordsSection.createDiv('checkin-records-list');
+        this.updateCheckInRecordsDisplay();
+    }
 
     async loadAllRecords(forceRefresh = false) {
         try {
@@ -682,6 +694,9 @@ class HabitTrackerView extends ItemView {
             const startStr = this.formatDate(startDate);
             const endStr = this.formatDate(endDate);
             
+            // 保存当前时间范围
+            this.currentTimeRange = { startDate, endDate, rangeKey: 'thisMonth' };
+            
             this.filteredRecords = this.plugin.storage.filterRecordsByDateRange(
                 this.currentRecords, startStr, endStr
             );
@@ -689,6 +704,7 @@ class HabitTrackerView extends ItemView {
             
             this.updateStatsDisplay();
             this.updateHabitListDisplay();
+            this.updateCheckInRecordsDisplay();
             
             const message = forceRefresh 
                 ? `已刷新并加载 ${this.currentRecords.length} 条打卡记录`
@@ -835,8 +851,9 @@ class HabitTrackerView extends ItemView {
             
             await this.app.vault.modify(file, content);
             
-            // 清除缓存
+            // 清除缓存并重新加载数据
             this.plugin.storage.clearCache();
+            await this.loadAllRecords(false);
             
         } catch (error) {
             console.error('切换打卡状态失败:', error);
@@ -848,10 +865,27 @@ class HabitTrackerView extends ItemView {
     
     getLast7Days() {
         const days = [];
-        const today = new Date();
         
+        // 根据当前时间范围决定结束日期
+        let endDate;
+        if (this.currentTimeRange) {
+            const { rangeKey, endDate: rangeEndDate } = this.currentTimeRange;
+            
+            // 本周和本月：使用今天作为结束日期
+            if (rangeKey === 'thisWeek' || rangeKey === 'thisMonth') {
+                endDate = new Date();
+            } 
+            // 上周和上月：使用时间范围的结束日期
+            else {
+                endDate = new Date(rangeEndDate);
+            }
+        } else {
+            endDate = new Date();
+        }
+        
+        // 从结束日期往前推7天
         for (let i = 6; i >= 0; i--) {
-            const date = new Date(today);
+            const date = new Date(endDate);
             date.setDate(date.getDate() - i);
             days.push(date.toISOString().split('T')[0]);
         }
@@ -869,7 +903,7 @@ class HabitTrackerView extends ItemView {
             return;
         }
 
-        const { totalCheckins, habitStats, streaks } = this.currentStats;
+        const { totalCheckins, habitStats } = this.currentStats;
 
         // 总览统计
         const overview = this.statsContainer.createDiv('stats-overview');
@@ -881,32 +915,100 @@ class HabitTrackerView extends ItemView {
         const habitsCard = overview.createDiv('stat-card habits');
         habitsCard.createDiv({ text: '追踪习惯数', cls: 'stat-label' });
         habitsCard.createDiv({ text: `${Object.keys(habitStats).length}`, cls: 'stat-value' });
-
-        // 习惯统计
-        if (Object.keys(habitStats).length > 0) {
-            const habitSection = this.statsContainer.createDiv('habit-stats-section');
-            habitSection.createEl('h3', { text: '习惯统计' });
+    }
+    
+    updateCheckInRecordsDisplay() {
+        if (!this.checkInRecordsContainer) return;
+        
+        this.checkInRecordsContainer.empty();
+        
+        if (!this.filteredRecords || this.filteredRecords.length === 0) {
+            this.checkInRecordsContainer.createDiv({ text: '暂无打卡记录', cls: 'no-data' });
+            return;
+        }
+        
+        // 按日期分组
+        const recordsByDate = {};
+        this.filteredRecords.forEach(record => {
+            if (!recordsByDate[record.date]) {
+                recordsByDate[record.date] = [];
+            }
+            recordsByDate[record.date].push(record);
+        });
+        
+        // 按日期倒序排列
+        const sortedDates = Object.keys(recordsByDate).sort().reverse();
+        
+        sortedDates.forEach(date => {
+            const dateGroup = this.checkInRecordsContainer.createDiv('checkin-date-group');
             
-            const habitList = habitSection.createDiv('habit-stats-list');
+            // 日期标题
+            const dateHeader = dateGroup.createDiv('checkin-date-header');
+            const dateObj = new Date(date);
+            const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            const weekday = weekdays[dateObj.getDay()];
             
-            Object.entries(habitStats)
-                .sort(([,a], [,b]) => b.count - a.count)
-                .forEach(([habitKey, data]) => {
-                    const item = habitList.createDiv('habit-stat-item');
-                    
-                    const info = item.createDiv('habit-info');
-                    
-                    const habitLabel = info.createDiv('habit-label');
-                    habitLabel.textContent = data.name;
-                    
-                    const habitMeta = info.createDiv('habit-meta');
-                    habitMeta.createDiv({ text: `${data.count}次`, cls: 'habit-count' });
-                    
-                    const streak = streaks[habitKey] || 0;
-                    if (streak > 0) {
-                        habitMeta.createDiv({ text: `🔥 ${streak}天`, cls: 'habit-streak' });
-                    }
-                });
+            const dateText = dateHeader.createEl('span', { 
+                text: date, 
+                cls: 'checkin-date-text clickable' 
+            });
+            dateHeader.createEl('span', { 
+                text: weekday, 
+                cls: 'checkin-weekday' 
+            });
+            
+            // 添加点击事件，打开对应日期的日记
+            dateText.onclick = async () => {
+                await this.openDailyNote(date);
+            };
+            
+            // 打卡记录
+            const records = recordsByDate[date];
+            const recordsContainer = dateGroup.createDiv('checkin-records');
+            
+            records.forEach(record => {
+                const recordItem = recordsContainer.createDiv('checkin-record-item');
+                
+                // 习惯标签
+                const habitTag = recordItem.createDiv('checkin-habit-tag');
+                habitTag.textContent = record.habitName;
+                
+                // 原始内容（备注）
+                const rawContent = recordItem.createDiv('checkin-raw-content');
+                // 移除标签，只显示备注内容
+                let content = record.rawLine.replace(`#${record.habitKey}`, '').trim();
+                // 移除列表标记
+                content = content.replace(/^-\s*/, '').trim();
+                // 移除"xxx打卡"
+                content = content.replace(`${record.habitName}打卡`, '').trim();
+                
+                if (content) {
+                    rawContent.textContent = content;
+                } else {
+                    rawContent.textContent = '无备注';
+                    rawContent.classList.add('no-note');
+                }
+            });
+        });
+    }
+    
+    async openDailyNote(dateStr) {
+        try {
+            const fileName = `${this.plugin.config.journalsPath}/${dateStr}.md`;
+            const file = this.app.vault.getAbstractFileByPath(fileName);
+            
+            if (!file) {
+                new Notice(`日记文件不存在: ${dateStr}`);
+                return;
+            }
+            
+            // 打开文件
+            const leaf = this.app.workspace.getLeaf(false);
+            await leaf.openFile(file);
+            
+        } catch (error) {
+            console.error('打开日记失败:', error);
+            new Notice('打开日记失败');
         }
     }
 

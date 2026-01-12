@@ -695,6 +695,114 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* 打卡记录列表 */
+.checkin-records-section {
+    margin-top: 32px;
+}
+
+.section-title {
+    margin-bottom: 16px;
+    color: var(--text-normal);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.checkin-records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.checkin-date-group {
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.15s ease;
+}
+
+.checkin-date-group:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.checkin-date-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.checkin-date-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-normal);
+}
+
+.checkin-date-text.clickable {
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.checkin-date-text.clickable:hover {
+    color: var(--interactive-accent);
+    text-decoration: underline;
+}
+
+.checkin-weekday {
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--background-secondary);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.checkin-records {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkin-record-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--background-secondary);
+    border-radius: 8px;
+    transition: all 0.15s ease;
+}
+
+.checkin-record-item:hover {
+    background: var(--background-modifier-hover);
+}
+
+.checkin-habit-tag {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #10b981, #059669);
+    padding: 4px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.checkin-raw-content {
+    font-size: 14px;
+    color: var(--text-normal);
+    flex: 1;
+    line-height: 1.5;
+}
+
+.checkin-raw-content.no-note {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .habit-tracker-view {
