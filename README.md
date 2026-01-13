@@ -14,7 +14,32 @@
 - 🚀 **性能优化**：只扫描日期格式文件，快速加载
 - 💾 **智能缓存**：30秒缓存 + 文件监听自动更新
 
-## 📝 使用方法
+## 安装方法
+
+### 方式一：从 GitHub Release 安装（推荐）
+
+1. 前往 [Releases](../../releases) 页面下载最新版本
+2. 下载以下文件：
+   - `main.js`
+   - `manifest.json`
+   - `styles.css`
+   - `config.json`
+3. 在你的 Obsidian 库中创建插件目录：`.obsidian/plugins/obsidian-habit-tracker/`
+4. 将下载的文件复制到该目录
+5. 重启 Obsidian 或刷新插件列表
+6. 在设置中启用"掌控习惯"插件
+
+### 方式二：手动安装
+
+```bash
+cd /path/to/your/vault/.obsidian/plugins
+git clone https://github.com/你的用户名/obsidian-habit-tracker.git
+cd obsidian-habit-tracker
+npm install
+npm run build
+```
+
+## 📝 快速开始
 
 ### 1. 在日记中打卡
 
@@ -60,10 +85,8 @@
 ### 默认习惯
 
 - `reading` - 阅读
-- `exercise` - 运动
-- `meditation` - 冥想
-- `study` - 学习
-- `water` - 喝水
+- `sp` - 运动
+- `en` - 学习
 - `sleep` - 早睡
 
 ### 自定义习惯
@@ -80,6 +103,24 @@
 1. 输入你想要的应用名称（如"我的习惯"）
 2. 实时预览效果
 3. 点击"保存"后，标签页、页面标题、功能区图标都会更新
+
+### 配置文件
+
+插件使用 `config.json` 文件进行配置：
+
+```json
+{
+    "appName": "掌控习惯",
+    "habits": {
+        "reading": "阅读",
+        "sp": "运动",
+        "en": "学习",
+        "sleep": "早睡"
+    },
+    "habitPrefix": "#",
+    "journalsPath": "journals"
+}
+```
 
 ## 📊 习惯列表视图
 
@@ -113,83 +154,40 @@
 - 文件变化自动检测，立即更新缓存
 - 批量并行处理，快速加载
 
-## 📦 安装
+## 常见问题
 
-1. 将插件文件复制到 `.obsidian/plugins/obsidian-habit-tracker/`
-2. 在 Obsidian 设置中启用插件
-3. 开始使用！
+**Q: 为什么看不到打卡记录？**  
+A: 确保日记文件在 `journals` 目录下，文件名是 `yyyy-mm-dd.md` 格式，使用了正确的标签格式（如 `#reading`）
 
-## 🎨 界面预览
+**Q: 如何修改应用名称？**  
+A: 点击"配置习惯"按钮，切换到"基础设置"标签页，输入新名称并保存
 
-- **统计卡片**：显示总打卡次数、追踪习惯数
-- **时间筛选**：本周、上周、本月、上月快速切换
-- **习惯列表**：展示每个习惯的完成次数、连续天数和7天圆点
-- **习惯统计**：详细的习惯统计信息
+**Q: 连续天数为什么是0？**  
+A: 连续天数只有在今天或昨天有打卡时才会显示。如果中断了，会重新开始计算
 
-## 💡 提示
+**Q: 数据更新不及时怎么办？**  
+A: 点击"刷新数据"按钮手动刷新，或等待30秒缓存自动更新
 
-- 打卡标识符默认为 `#`（标签形式），可在配置文件中修改
-- 日记文件路径默认为 `journals`，可在配置文件中修改
-- 支持在同一天多次打卡同一个习惯（但只计算一次）
-- 标签可以出现在句子的任何位置，灵活方便
-- 配置修改后会自动刷新视图
-
-## 🔧 开发
+## 开发
 
 ```bash
-# 安装依赖
-npm install
-
-# 开发模式（监听文件变化）
+# 开发模式
 npm run dev
 
-# 构建生产版本
+# 构建
 npm run build
 
-# 部署到所有 vault
+# 部署到本地vault
 npm run deploy
+
+# 发布到GitHub
+npm run release
 ```
 
-## 📋 配置文件示例
+## License
 
-```json
-{
-    "appName": "掌控习惯",
-    "habits": {
-        "reading": "阅读",
-        "exercise": "运动",
-        "meditation": "冥想",
-        "study": "学习",
-        "water": "喝水",
-        "sleep": "早睡"
-    },
-    "habitPrefix": "#",
-    "journalsPath": "journals"
-}
-```
+MIT
 
-## 🔧 技术特性
+---
 
-- 基于 Obsidian API 开发
-- 使用 esbuild 构建
-- Notion 风格的现代化 UI
-- 响应式设计，支持移动端
-- CommonJS 模块格式
-
-## 📝 更新日志
-
-### v1.0.0 (2024-01-10)
-
-- ✨ 初始版本发布
-- 📝 支持标签形式打卡
-- 📊 习惯列表 + 最近7天圆点显示
-- 🔥 连续打卡天数统计
-- ⏰ 时间筛选功能（本周、上周、本月、上月）
-- ⚡ 性能优化：只扫描日期格式文件
-- 💾 智能缓存机制
-- 🎯 自定义应用名称
-- 🎨 Notion 风格 UI
-
-## 📄 许可证
-
-MIT License
+💪 **开始使用掌控习惯，养成好习惯！**
