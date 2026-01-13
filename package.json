@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs production",
-    "deploy": "bash deploy.sh"
+    "deploy": "npm run build && node deploy.mjs"
   },
   "keywords": ["obsidian", "plugin", "habit", "tracker"],
   "author": "",
