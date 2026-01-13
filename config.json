@@ -2,10 +2,8 @@
     "appName": "掌控习惯",
     "habits": {
         "reading": "阅读",
-        "exercise": "运动",
-        "meditation": "冥想",
-        "study": "学习",
-        "water": "喝水",
+        "sp": "运动",
+        "en": "学习",
         "sleep": "早睡"
     },
     "habitPrefix": "#",
