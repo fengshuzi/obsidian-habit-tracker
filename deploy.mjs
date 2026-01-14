@@ -41,12 +41,12 @@ const vaults = [
   }
 ];
 
-// 需要复制的文件（源文件 -> 目标文件）
+// 需要复制的文件（都从 dist 目录）
 const files = [
   { source: 'dist/main.js', target: 'main.js' },
-  { source: 'manifest.json', target: 'manifest.json' },
-  { source: 'styles.css', target: 'styles.css' },
-  { source: 'config.json', target: 'config.json' }
+  { source: 'dist/manifest.json', target: 'manifest.json' },
+  { source: 'dist/styles.css', target: 'styles.css' },
+  { source: 'dist/config.json', target: 'config.json' }
 ];
 
 console.log('🚀 开始部署 Habit Tracker 插件...\n');
