@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "node esbuild.config.mjs production",
+    "build": "node esbuild.config.mjs production && cp manifest.json styles.css config.json dist/",
     "deploy": "npm run build && node deploy.mjs",
     "release": "node release.mjs"
   },
