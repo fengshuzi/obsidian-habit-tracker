@@ -78,35 +78,18 @@ class HabitStorage {
         };
         
         this.cacheTimeout = 30 * 1000; // 30秒缓存
-        
-        // 监听文件变化
-        this.setupFileWatcher();
     }
-    
-    setupFileWatcher() {
-        this.app.vault.on('modify', (file) => {
-            if (file.path.startsWith(this.config.journalsPath) && file.path.endsWith('.md')) {
-                this.clearCache();
-            }
-        });
-        
-        this.app.vault.on('create', (file) => {
-            if (file.path.startsWith(this.config.journalsPath) && file.path.endsWith('.md')) {
-                this.clearCache();
-            }
-        });
-        
-        this.app.vault.on('delete', (file) => {
-            if (file.path.startsWith(this.config.journalsPath) && file.path.endsWith('.md')) {
-                this.clearCache();
-            }
-        });
-    }
-    
-    destroy() {
-        this.app.vault.off('modify');
-        this.app.vault.off('create');
-        this.app.vault.off('delete');
+
+    /**
+     * 日记文件变化时调用（vault / metadataCache 事件），清除缓存
+     * @returns 是否为日记文件且已清除缓存（用于决定是否刷新视图）
+     */
+    onFileChange(file) {
+        if (file.path.startsWith(this.config.journalsPath + '/') && file.extension === 'md') {
+            this.clearCache();
+            return true;
+        }
+        return false;
     }
     
     isCacheValid() {
@@ -1050,15 +1033,40 @@ class HabitTrackerPlugin extends Plugin {
             name: '刷新打卡数据',
             callback: () => this.refreshData()
         });
+
+        // 监听日记文件变化（Alfred/外部写入等），清除缓存并刷新视图，无需定时轮询
+        this.registerEvent(
+            this.app.vault.on('modify', (file) => {
+                if (file instanceof TFile && this.storage.onFileChange(file)) {
+                    this.refreshData();
+                }
+            })
+        );
+        this.registerEvent(
+            this.app.vault.on('create', (file) => {
+                if (file instanceof TFile && this.storage.onFileChange(file)) {
+                    this.refreshData();
+                }
+            })
+        );
+        this.registerEvent(
+            this.app.vault.on('delete', (file) => {
+                if (file instanceof TFile && this.storage.onFileChange(file)) {
+                    this.refreshData();
+                }
+            })
+        );
+        this.registerEvent(
+            this.app.metadataCache.on('changed', (file) => {
+                if (file instanceof TFile && this.storage.onFileChange(file)) {
+                    this.refreshData();
+                }
+            })
+        );
     }
 
     async onunload() {
         console.log('卸载掌控习惯插件');
-        
-        if (this.storage) {
-            this.storage.destroy();
-        }
-        
         this.app.workspace.detachLeavesOfType(HABIT_VIEW);
     }
 
